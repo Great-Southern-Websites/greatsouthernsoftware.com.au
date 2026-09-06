@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 443 432" width="443" height="432">
+<g transform="translate(16 16)">
+<g transform="translate(-68.42105263157896 -84.21052631578948) scale(2.6315789473684212)"><g>
+<path d="M 48 116 Q 30 122 26 144 Q 38 138 56 134 Z" fill="#0E1116"></path>
+<circle cx="78" cy="108" r="38" fill="#0E1116"></circle>
+<path d="M 100 84 C 108 70, 118 60, 126 52 L 134 60 C 124 72, 114 86, 108 96 Z" fill="#0E1116"></path>
+<circle cx="130" cy="50" r="13" fill="#0E1116"></circle>
+<path d="M 142 48 C 162 50, 178 64, 182 86 C 182 90, 178 92, 176 88 C 170 74, 158 64, 144 60 Z" fill="#0E1116"></path>
+<rect x="68" y="146" width="4" height="38" rx="2" fill="#0E1116"></rect>
+<rect x="86" y="146" width="4" height="38" rx="2" fill="#0E1116"></rect>
+<circle cx="133" cy="48" r="2" fill="#F4F1EA"></circle>
+</g></g>
+</g>
+</svg>

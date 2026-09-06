@@ -272,22 +272,17 @@ a:hover { text-decoration-color: var(--link); }
   margin-top: 0.2rem;
 }
 
-/* The product icons are drawn for ink. On paper they sit on an ink tile,
-   the same treatment as logomark-tile-dark.svg. */
-:root[data-theme="light"] .product-icon {
-  background: var(--gss-ink);
-  border-radius: 10px;
-  padding: 0.5rem;
-  box-sizing: content-box;
-}
+/* Each product ships two icons, one drawn for ink and one for paper.
+   Only the one for the current theme shows, the same way the header
+   toggle picks the sun or the moon. */
+.product-icon-light { display: none; }
+:root[data-theme="light"] .product-icon-light { display: block; }
+:root[data-theme="light"] .product-icon-dark { display: none; }
 
+/* Without JavaScript there is no toggle; follow the system setting. */
 @media (prefers-color-scheme: light) {
-  :root:not([data-theme]) .product-icon {
-    background: var(--gss-ink);
-    border-radius: 10px;
-    padding: 0.5rem;
-    box-sizing: content-box;
-  }
+  :root:not([data-theme]) .product-icon-light { display: block; }
+  :root:not([data-theme]) .product-icon-dark { display: none; }
 }
 
 .product h3 {
