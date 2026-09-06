@@ -1,5 +1,7 @@
 /* Great Southern Software - greatsouthernsoftware.com.au
-   Dark-first. One warm colour (star gold); everything else stays cold. */
+   Dark-first. One warm colour (star gold); everything else stays cold.
+   A light theme (ink on paper) is available through the header toggle;
+   it follows the brand's light lockup: ink nodes, muted second line. */
 
 :root {
   --gss-ink:       #0E1726;
@@ -11,11 +13,61 @@
   /* derived, still inside the five-colour system */
   --gss-ink-raised: #16233A;          /* ink lightened for cards/hairlines */
   --gss-paper-dim:  #C7D2DC;          /* paper knocked back for body copy on ink */
+  --gss-paper-deep: #E4E9EE;          /* paper knocked back for cards on paper */
 
   --font-display: "Space Grotesk", system-ui, sans-serif;
   --font-body: "Inter", system-ui, sans-serif;
 
   --measure: 34rem;
+
+  /* theme roles: dark is the default */
+  color-scheme: dark;
+  --bg:            var(--gss-ink);
+  --fg:            var(--gss-paper-dim);
+  --heading:       var(--gss-paper);
+  --surface:       var(--gss-ink-raised);
+  --rule:          var(--gss-ink-raised);
+  --link:          var(--gss-sightline);
+  --link-hover:    var(--gss-star);
+  --lockup-node:   var(--gss-star);
+  --lockup-line:   var(--gss-sightline);
+  --lockup-line-alpha: 0.34;
+  --lockup-line-1: var(--gss-paper);
+  --lockup-line-2: var(--gss-sightline);
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+  --bg:            var(--gss-paper);
+  --fg:            var(--gss-ink);
+  --heading:       var(--gss-ink);
+  --surface:       var(--gss-paper-deep);
+  --rule:          var(--gss-paper-deep);
+  --link:          var(--gss-ink);
+  --link-hover:    var(--gss-muted);
+  --lockup-node:   var(--gss-ink);
+  --lockup-line:   var(--gss-ink);
+  --lockup-line-alpha: 0.34;
+  --lockup-line-1: var(--gss-ink);
+  --lockup-line-2: var(--gss-muted);
+}
+
+/* Without JavaScript there is no toggle; follow the system setting. */
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme]) {
+    color-scheme: light;
+    --bg:            var(--gss-paper);
+    --fg:            var(--gss-ink);
+    --heading:       var(--gss-ink);
+    --surface:       var(--gss-paper-deep);
+    --rule:          var(--gss-paper-deep);
+    --link:          var(--gss-ink);
+    --link-hover:    var(--gss-muted);
+    --lockup-node:   var(--gss-ink);
+    --lockup-line:   var(--gss-ink);
+    --lockup-line-1: var(--gss-ink);
+    --lockup-line-2: var(--gss-muted);
+  }
 }
 
 @font-face {
@@ -36,8 +88,8 @@
 
 body {
   margin: 0;
-  background: var(--gss-ink);
-  color: var(--gss-paper-dim);
+  background: var(--bg);
+  color: var(--fg);
   font-family: var(--font-body);
   font-size: 1.0625rem;
   line-height: 1.65;
@@ -52,7 +104,7 @@ main {
 
 h1, h2, h3 {
   font-family: var(--font-display);
-  color: var(--gss-paper);
+  color: var(--heading);
   line-height: 1.15;
 }
 
@@ -66,12 +118,12 @@ h2 {
 }
 
 a {
-  color: var(--gss-sightline);
-  text-decoration-color: color-mix(in srgb, var(--gss-sightline) 40%, transparent);
+  color: var(--link);
+  text-decoration-color: color-mix(in srgb, var(--link) 40%, transparent);
   text-underline-offset: 0.2em;
 }
 
-a:hover { text-decoration-color: var(--gss-sightline); }
+a:hover { text-decoration-color: var(--link); }
 
 :focus-visible {
   outline: 2px solid var(--gss-star);
@@ -88,17 +140,57 @@ a:hover { text-decoration-color: var(--gss-sightline); }
   white-space: nowrap;
 }
 
+/* ---- Header: theme toggle ------------------------------------------- */
+
+.site-header {
+  max-width: 42rem;
+  margin: 0 auto;
+  padding: 1rem 1.5rem 0;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.theme-toggle {
+  appearance: none;
+  background: transparent;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  color: var(--gss-muted);
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 0;
+  display: inline-grid;
+  place-items: center;
+  cursor: pointer;
+}
+
+.theme-toggle:hover { color: var(--heading); border-color: var(--gss-muted); }
+
+.theme-toggle svg { width: 1.125rem; height: 1.125rem; display: block; }
+
+/* One icon per theme: the moon shows in dark, the sun in light. */
+.theme-toggle .icon-sun { display: none; }
+:root[data-theme="light"] .theme-toggle .icon-sun { display: block; }
+:root[data-theme="light"] .theme-toggle .icon-moon { display: none; }
+
 /* ---- Hero ---------------------------------------------------------- */
 
 .hero {
   text-align: center;
-  padding: clamp(4rem, 14vh, 8rem) 0 5rem;
+  padding: clamp(3rem, 12vh, 7rem) 0 5rem;
 }
 
 .lockup {
   width: min(300px, 70vw);
   height: auto;
 }
+
+/* The inline lockup carries the dark colours as attributes; these
+   overrides let the light theme match logo-stacked-light.svg. */
+.lockup .sightline { stroke: var(--lockup-line); opacity: var(--lockup-line-alpha); }
+.lockup .star { fill: var(--lockup-node); }
+.lockup .wordmark-1 path { fill: var(--lockup-line-1); }
+.lockup .wordmark-2 path { fill: var(--lockup-line-2); }
 
 .hero .lede {
   max-width: var(--measure);
@@ -155,7 +247,7 @@ a:hover { text-decoration-color: var(--gss-sightline); }
 
 .products {
   padding: 3.5rem 0 5rem;
-  border-top: 1px solid var(--gss-ink-raised);
+  border-top: 1px solid var(--rule);
 }
 
 .product-list {
@@ -167,7 +259,7 @@ a:hover { text-decoration-color: var(--gss-sightline); }
 }
 
 .product {
-  background: var(--gss-ink-raised);
+  background: var(--surface);
   border-radius: 10px;
   padding: 1.75rem 2rem;
   display: grid;
@@ -180,6 +272,24 @@ a:hover { text-decoration-color: var(--gss-sightline); }
   margin-top: 0.2rem;
 }
 
+/* The product icons are drawn for ink. On paper they sit on an ink tile,
+   the same treatment as logomark-tile-dark.svg. */
+:root[data-theme="light"] .product-icon {
+  background: var(--gss-ink);
+  border-radius: 10px;
+  padding: 0.5rem;
+  box-sizing: content-box;
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme]) .product-icon {
+    background: var(--gss-ink);
+    border-radius: 10px;
+    padding: 0.5rem;
+    box-sizing: content-box;
+  }
+}
+
 .product h3 {
   margin: 0 0 0.5rem;
   font-size: 1.375rem;
@@ -188,11 +298,11 @@ a:hover { text-decoration-color: var(--gss-sightline); }
 }
 
 .product h3 a {
-  color: var(--gss-paper);
+  color: var(--heading);
   text-decoration: none;
 }
 
-.product h3 a:hover { color: var(--gss-star); }
+.product h3 a:hover { color: var(--link-hover); }
 
 .product p { margin: 0; max-width: var(--measure); }
 
@@ -212,7 +322,7 @@ a:hover { text-decoration-color: var(--gss-sightline); }
 /* ---- Footer --------------------------------------------------------- */
 
 .site-footer {
-  border-top: 1px solid var(--gss-ink-raised);
+  border-top: 1px solid var(--rule);
   padding: 3rem 1.5rem 4rem;
 }
 
