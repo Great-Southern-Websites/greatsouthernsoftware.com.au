@@ -19,6 +19,7 @@
   --font-body: "Inter", system-ui, sans-serif;
 
   --measure: 34rem;
+  --shell: 72rem;                     /* the page sits in one wide column */
 
   /* theme roles: dark is the default */
   color-scheme: dark;
@@ -88,6 +89,9 @@
 
 body {
   margin: 0;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
   background: var(--bg);
   color: var(--fg);
   font-family: var(--font-body);
@@ -97,9 +101,13 @@ body {
 }
 
 main {
-  max-width: 42rem;
+  flex: 1;
+  width: 100%;
+  max-width: var(--shell);
   margin: 0 auto;
   padding: 0 1.5rem;
+  display: grid;
+  align-content: center;
 }
 
 h1, h2, h3 {
@@ -114,7 +122,7 @@ h2 {
   letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--gss-muted);
-  margin: 0 0 1.5rem;
+  margin: 0 0 clamp(0.75rem, 2vh, 1.5rem);
 }
 
 a {
@@ -143,9 +151,9 @@ a:hover { text-decoration-color: var(--link); }
 /* ---- Header: theme toggle ------------------------------------------- */
 
 .site-header {
-  max-width: 42rem;
+  max-width: var(--shell);
   margin: 0 auto;
-  padding: 1rem 1.5rem 0;
+  padding: clamp(0.75rem, 1.5vh, 1rem) 1.5rem 0;
   display: flex;
   justify-content: flex-end;
 }
@@ -177,11 +185,13 @@ a:hover { text-decoration-color: var(--link); }
 
 .hero {
   text-align: center;
-  padding: clamp(3rem, 12vh, 7rem) 0 5rem;
+  padding: clamp(2.5rem, 8vh, 5rem) 0 3rem;
 }
 
+/* Capped against the window's height as well as its width, so the mark stays
+   whole on a short screen instead of pushing the page into a scroll. */
 .lockup {
-  width: min(300px, 70vw);
+  width: min(300px, 70vw, 40vh);
   height: auto;
 }
 
@@ -194,7 +204,7 @@ a:hover { text-decoration-color: var(--link); }
 
 .hero .lede {
   max-width: var(--measure);
-  margin: 2.5rem auto 0;
+  margin: 2rem auto 0;
   font-size: 1.125rem;
 }
 
@@ -245,8 +255,14 @@ a:hover { text-decoration-color: var(--link); }
 
 /* ---- Sections ------------------------------------------------------ */
 
+/* Narrow: the mark, then the products under it. Wide: the two sit side by
+   side (see the wide-screen block below) so the whole page is one screen. */
+.home {
+  display: grid;
+}
+
 .products {
-  padding: 3.5rem 0 5rem;
+  padding: 3rem 0;
   border-top: 1px solid var(--rule);
 }
 
@@ -255,13 +271,13 @@ a:hover { text-decoration-color: var(--link); }
   margin: 0;
   padding: 0;
   display: grid;
-  gap: 1.25rem;
+  gap: clamp(0.75rem, 1.6vh, 1.25rem);
 }
 
 .product {
   background: var(--surface);
   border-radius: 10px;
-  padding: 1.75rem 2rem;
+  padding: clamp(1rem, 2.2vh, 1.5rem) 1.75rem;
   display: grid;
   grid-template-columns: auto 1fr;
   gap: 1.25rem;
@@ -301,7 +317,47 @@ a:hover { text-decoration-color: var(--link); }
 
 .product p { margin: 0; max-width: var(--measure); }
 
-.product-meta { margin-top: 0.75rem; font-size: 0.9375rem; }
+.product-meta { margin-top: clamp(0.5rem, 1.2vh, 0.75rem); font-size: 0.9375rem; }
+
+/* ---- Wide screens: the home page as one screen ---------------------- */
+
+@media (min-width: 62rem) {
+  .home {
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+    gap: clamp(2rem, 4vw, 3.5rem);
+  }
+
+  /* Both columns run the full height of the row and hold their content in
+     the middle of it, so the rule between them is not left short. */
+  .home .hero,
+  .home .products {
+    display: grid;
+    align-content: center;
+  }
+
+  .home .hero {
+    text-align: left;
+    padding: clamp(0.5rem, 2vh, 1.5rem) 0;
+  }
+
+  /* The drawn lockup carries 8.9% of its own width as padding on the left,
+     so it is pulled back by that much to stand the wordmark on the same
+     line as the sentence under it. */
+  .home .lockup {
+    width: min(420px, 100%, 42vh);
+    transform: translateX(-8.9%);
+  }
+
+  .home .hero .lede { margin-left: 0; margin-right: 0; }
+
+  /* The hairline between the two sections stands up and becomes the
+     column divider. */
+  .home .products {
+    border-top: 0;
+    border-left: 1px solid var(--rule);
+    padding: clamp(0.5rem, 2vh, 1.5rem) 0 clamp(0.5rem, 2vh, 1.5rem) clamp(2rem, 4vw, 3.5rem);
+  }
+}
 
 /* ---- 404 ------------------------------------------------------------ */
 
@@ -318,10 +374,16 @@ a:hover { text-decoration-color: var(--link); }
 
 .site-footer {
   border-top: 1px solid var(--rule);
-  padding: 3rem 1.5rem 4rem;
+  padding: clamp(1rem, 2vh, 2rem) 0 clamp(1rem, 2vh, 2.25rem);
 }
 
-.footer-inner { max-width: 42rem; margin: 0 auto; }
+/* The padding sits inside the inner block so the footer starts on the same
+   line as the page above it. */
+.footer-inner {
+  max-width: var(--shell);
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
 
 .footer-mark { display: block; margin-bottom: 1.5rem; }
 
@@ -343,9 +405,39 @@ a:hover { text-decoration-color: var(--link); }
 .footer-legal dd { margin: 0; }
 
 .footer-note {
-  margin: 2rem 0 0;
+  margin: 1.5rem 0 0;
   font-size: 0.875rem;
   color: var(--gss-muted);
+}
+
+/* Wide: the legal details run across the footer in three pairs of rows,
+   label over value, with the mark beside them. */
+@media (min-width: 62rem) {
+  .footer-inner {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    column-gap: 2.5rem;
+    row-gap: 0.75rem;
+    align-items: start;
+  }
+
+  .footer-mark { margin: 0; grid-row: span 2; }
+
+  .footer-legal {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.75rem 2.5rem;
+  }
+
+  .footer-legal div { display: block; }
+
+  .footer-legal dt {
+    min-width: 0;
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .footer-note { margin: 0; align-self: end; }
 }
 
 @media (max-width: 480px) {
