@@ -140,15 +140,30 @@ a:hover { text-decoration-color: var(--link); }
   white-space: nowrap;
 }
 
-/* ---- Header: theme toggle ------------------------------------------- */
+/* ---- Header: menu and theme toggle ---------------------------------- */
 
 .site-header {
   max-width: 42rem;
   margin: 0 auto;
   padding: 1rem 1.5rem 0;
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
 }
+
+.site-nav {
+  display: flex;
+  gap: 1.5rem;
+  font-size: 0.9375rem;
+}
+
+.site-nav a {
+  color: var(--gss-muted);
+  text-decoration: none;
+}
+
+.site-nav a:hover { color: var(--heading); }
 
 .theme-toggle {
   appearance: none;
@@ -303,6 +318,49 @@ a:hover { text-decoration-color: var(--link); }
 
 .product-meta { margin-top: 0.75rem; font-size: 0.9375rem; }
 
+/* ---- Contact -------------------------------------------------------- */
+
+.page-head { padding: clamp(2.5rem, 8vh, 4rem) 0 0; }
+
+.page-head h1 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+
+.contact-details { padding: 2.5rem 0 0; }
+
+.contact-list {
+  margin: 0;
+  display: grid;
+  gap: 0.35rem;
+  font-size: 0.9375rem;
+}
+
+.contact-list div { display: flex; gap: 0.75rem; }
+
+.contact-list dt {
+  color: var(--gss-muted);
+  min-width: 9rem;
+  flex-shrink: 0;
+}
+
+.contact-list dd { margin: 0; }
+
+/* The form partial styles itself with these role names. Map them onto the
+   site's own tokens so the form sits in the palette and follows the theme. */
+.contact-form-section {
+  margin-top: 3.5rem;
+  padding: 3.5rem 0 5rem;
+  border-top: 1px solid var(--rule);
+  --line: var(--gss-muted);
+  --bg-card: var(--surface);
+  --bg-alt: var(--surface);
+  --accent: var(--gss-star);
+  --radius: 10px;
+}
+
 /* ---- 404 ------------------------------------------------------------ */
 
 .hero-404 h1 {
@@ -349,7 +407,7 @@ a:hover { text-decoration-color: var(--link); }
 }
 
 @media (max-width: 480px) {
-  .footer-legal div { flex-direction: column; gap: 0; }
-  .footer-legal div + div { margin-top: 0.6rem; }
+  .footer-legal div, .contact-list div { flex-direction: column; gap: 0; }
+  .footer-legal div + div, .contact-list div + div { margin-top: 0.6rem; }
   .product { padding: 1.5rem 1.25rem; }
 }
