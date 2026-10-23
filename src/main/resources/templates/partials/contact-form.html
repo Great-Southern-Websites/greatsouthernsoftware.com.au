@@ -13,5 +13,10 @@
 .gsw-contact-trap { position: absolute; left: -10000px; top: auto; width: 1px; height: 1px; overflow: hidden; }
 .gsw-contact-error { color: #B42318; font-weight: 600; }
 .gsw-contact-sent { padding: 1rem 1.2rem; border-radius: var(--radius); background: var(--bg-alt); font-weight: 600; }
+/* A button of its own for sites without .btn .btn-primary; :where() keeps it at zero specificity so the site's own button styles win. */
+:where(.gsw-contact button[type=submit]) { display: inline-flex; align-items: center; justify-content: center; min-height: 2.9rem; padding: 0.7rem 1.4rem; border: 0; border-radius: 999px; background: var(--accent, #E8B04B); color: var(--accent-ink, #16202B); font: inherit; font-weight: 600; cursor: pointer; }
+:where(.gsw-contact button[type=submit]:hover) { filter: brightness(1.08); }
+:where(.gsw-contact button[type=submit]:focus-visible) { outline: 3px solid var(--accent, currentColor); outline-offset: 3px; }
+:where(.gsw-contact button[type=submit]:disabled) { opacity: 0.6; cursor: wait; }
 |}</style>
 <gsw-contact-form site="greatsouthernsoftware.com.au" api="https://www.greatsouthern.website"></gsw-contact-form>
